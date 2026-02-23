@@ -686,6 +686,85 @@ h1 .accent {
     line-height: 1.5;
 }
 
+/* Welcome Modal Specifics */
+.welcome-card {
+    max-width: 550px !important;
+    text-align: center;
+    border: 1px solid var(--primary) !important;
+    animation: modalSlide 0.5s ease-out;
+}
+
+@keyframes modalSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.warning-box {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--warning);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: left;
+    border-radius: 8px;
+}
+
+.warning-box p {
+    margin: 0;
+    color: var(--text-main);
+}
+
+.scale-up {
+    animation: scaleUp 0.8s ease-in-out infinite alternate;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px var(--primary-glow));
+    }
+
+    to {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px var(--primary));
+    }
+}
+
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: glowMove 3s infinite;
+}
+
+@keyframes glowMove {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;

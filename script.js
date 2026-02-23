@@ -196,6 +196,11 @@ function closeWarning() {
     document.body.style.overflow = 'auto';
 }
 
+function closeWelcome() {
+    document.getElementById('welcome-modal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
 function closeModal() {
     document.getElementById('report-modal').style.display = 'none';
     document.body.style.overflow = 'auto';
