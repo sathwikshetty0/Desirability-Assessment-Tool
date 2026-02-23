@@ -1,5 +1,17 @@
 // Initialize score on load
 document.addEventListener('DOMContentLoaded', () => {
+    // Set current date
+    const dateEl = document.getElementById('current-date');
+    if (dateEl) {
+        const d = new Date();
+        dateEl.textContent = d.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
     updateScore();
 
     // Add event listeners to all radio inputs
@@ -7,11 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inputs.forEach(input => {
         input.addEventListener('change', updateScore);
     });
-
-    // Add animation to the gauge on start
-    setTimeout(() => {
-        updateScore();
-    }, 500);
 });
 
 function updateScore() {
@@ -29,18 +36,24 @@ function updateScore() {
     const scoreElement = document.getElementById('total-score');
     scoreElement.textContent = totalScore.toFixed(1).replace('.0', '');
 
+    const maxScore = 45; // Define maxScore here
+
+    // Update Accuracy Percent
+    const accuracyPercent = (totalScore / maxScore) * 100;
+    const accuracyEl = document.getElementById('accuracy-percent');
+    if (accuracyEl) accuracyEl.textContent = `${accuracyPercent.toFixed(0)}%`;
+
     // Update Gauge
     const dashArray = 283; // 2 * PI * r (45)
-    const maxScore = 45;
     const percentage = totalScore / maxScore;
     const offset = dashArray - (dashArray * percentage);
 
-    const gaugeFill = document.querySelector('.gauge-fill');
-    gaugeFill.style.strokeDashoffset = offset;
+    const gaugeFill = document.getElementById('gauge-fill-circle');
+    if (gaugeFill) gaugeFill.style.strokeDashoffset = offset;
 
-    // Update Progress Bar (Target Accuracy)
-    const progressBar = document.querySelector('.progress-bar');
-    progressBar.style.width = `${(percentage * 100).toFixed(0)}%`;
+    // Update Progress Bar
+    const progressBar = document.getElementById('main-progress-bar');
+    if (progressBar) progressBar.style.width = `${accuracyPercent.toFixed(0)}%`;
 
     // Update Interpretation and Badge
     updateStatus(totalScore);

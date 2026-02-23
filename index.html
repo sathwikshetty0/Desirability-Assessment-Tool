@@ -31,7 +31,8 @@
             <div class="warning-box">
                 <p><strong>⚠️ IMPORTANT NOTICE:</strong></p>
                 <p>This tool relies on objective honesty. Inflating scores to feel better about a project is
-                    <strong>self-sabotage</strong>. A high score based on bias is a blueprint for failure.</p>
+                    <strong>self-sabotage</strong>. A high score based on bias is a blueprint for failure.
+                </p>
             </div>
             <p>By proceeding, you agree to be <strong>brutally honest</strong> with your evaluation.</p>
             <div class="modal-footer">
@@ -44,25 +45,34 @@
         <header class="header">
             <div class="logo-container">
                 <span class="logo-icon">∆</span>
-                <h1>DAT <span class="accent">v1.0</span></h1>
+                <div>
+                    <h1>DAT <span class="accent">v1.1</span></h1>
+                    <p class="subtitle">Desirability Assessment Tool</p>
+                </div>
             </div>
-            <p class="subtitle">Desirability Assessment Tool - Modern Problem Validation Framework</p>
+            <div class="header-actions">
+                <p id="current-date" class="text-muted"></p>
+            </div>
         </header>
 
         <section class="setup-card glass">
+            <div class="card-header">
+                <h3><span class="icon">⚙️</span> Configuration</h3>
+                <p>Define your venture details to begin the assessment.</p>
+            </div>
             <div class="input-row">
                 <div class="input-group">
-                    <label for="problem-statement">Problem Statement / Case Study</label>
-                    <input type="text" id="problem-statement" placeholder="Enter the problem you are validating..."
+                    <label for="problem-statement">Venture / Problem</label>
+                    <input type="text" id="problem-statement" placeholder="What problem are you solving?"
                         autocomplete="off">
                 </div>
                 <div class="input-group">
-                    <label for="team-name">Team Name</label>
-                    <input type="text" id="team-name" placeholder="e.g. Apollo 11" autocomplete="off">
+                    <label for="team-name">Squad / Team</label>
+                    <input type="text" id="team-name" placeholder="Team name" autocomplete="off">
                 </div>
                 <div class="input-group">
-                    <label for="evaluator-name">Evaluator Name</label>
-                    <input type="text" id="evaluator-name" placeholder="Your Name" autocomplete="off">
+                    <label for="evaluator-name">Evaluator</label>
+                    <input type="text" id="evaluator-name" placeholder="Your name" autocomplete="off">
                 </div>
             </div>
         </section>
@@ -395,33 +405,41 @@
                         <div class="gauge-container">
                             <svg class="gauge" viewBox="0 0 100 100">
                                 <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
-                                <circle class="gauge-fill" cx="50" cy="50" r="45"></circle>
+                                <circle class="gauge-fill" id="gauge-fill-circle" cx="50" cy="50" r="45"></circle>
                             </svg>
                             <div class="score-value">
-                                <span id="total-score">27</span>
+                                <span id="total-score">0.0</span>
                                 <span class="max-score">/ 45</span>
                             </div>
                         </div>
-                        <div class="status-badge" id="status-badge">Moderate Desirability</div>
+                        <div class="status-badge" id="status-badge">Awaiting Assessment</div>
                     </div>
 
                     <div class="summary-details">
                         <div class="stat-row">
-                            <span>Target Accuracy</span>
+                            <div class="stat-info">
+                                <span>Validation Match</span>
+                                <span id="accuracy-percent">0%</span>
+                            </div>
                             <div class="progress-container">
-                                <div class="progress-bar" style="width: 60%"></div>
+                                <div class="progress-bar" id="main-progress-bar"></div>
                             </div>
                         </div>
-                        <p class="interpretation" id="interpretation">
-                            Potential exists, but refinements are needed. Focus on improving customer understanding and
-                            value perception.
-                        </p>
+                        <div class="interpretation-box">
+                            <p class="interpretation" id="interpretation">
+                                Start by rating the questions on the left to see your venture's desirability score.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="actions">
-                        <button type="button" class="btn btn-primary" id="submit-form"
-                            onclick="generateReport()">Generate Final Report</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Assessment</button>
+                        <button type="button" class="btn btn-primary btn-glow" id="submit-form"
+                            onclick="generateReport()">
+                            <span>✨ Generate Report</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <span>🔄 Reset</span>
+                        </button>
                     </div>
                 </div>
             </div>
