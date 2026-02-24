@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAT | Desirability Assessment Tool</title>
     <meta name="description"
-        content="Validate your business ideas with the Desirability Assessment Tool. Score your problem statements across awareness, effort, value, and market viability.">
+        content="Desirability Assessment Tool (DAT) - Professional framework for market validation and innovation strategy.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%236366f1;stop-opacity:1' /><stop offset='100%' style='stop-color:%2322d3ee;stop-opacity:1' /></linearGradient></defs><rect width='100' height='100' rx='20' fill='url(%23g)'/><path d='M50 25 L75 70 L25 70 Z' fill='none' stroke='white' stroke-width='8' stroke-linejoin='round'/><path d='M50 35 L68 65 L32 65 Z' fill='white'/></svg>">
     <link rel="stylesheet" href="style.css">
@@ -19,479 +20,370 @@
     <div class="background-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
     </div>
 
-    <!-- Welcome Consent Modal -->
-    <div id="welcome-modal" class="modal welcome-modal" style="display: flex;">
-        <div class="modal-content glass welcome-card">
-            <div class="logo-icon scale-up">∆</div>
-            <h2>DAT Framework v1.0</h2>
-            <p>Welcome to the <strong>Desirability Assessment Tool</strong>.</p>
-            <div class="warning-box">
-                <p><strong>⚠️ IMPORTANT NOTICE:</strong></p>
-                <p>This tool relies on objective honesty. Inflating scores to feel better about a project is
-                    <strong>self-sabotage</strong>. A high score based on bias is a blueprint for failure.
-                </p>
+    <!-- Theme Control -->
+    <div class="top-controls">
+        <button class="control-btn" onclick="toggleTheme()" id="theme-toggle" title="Toggle Mode">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div id="welcome-modal" class="modal-overlay" style="display: flex;">
+        <div class="modal-content welcome-card" style="text-align: center;">
+            <span class="welcome-icon">∆</span>
+            <h2 class="welcome-title">DAT Assessment</h2>
+            <p style="color: var(--text-dim); margin-bottom: 2rem;">Desirability Assessment Tool - Professional
+                Validation Framework</p>
+            <div class="warning-alert" style="text-align: left;">
+                <p><strong>TRUTH ADVISORY:</strong></p>
+                <p>Strategic success depends on empirical accuracy. Please provide brutal honesty and justifications for
+                    each metric to ensure a valid report.</p>
             </div>
-            <p>By proceeding, you agree to be <strong>brutally honest</strong> with your evaluation.</p>
-            <div class="modal-footer">
-                <button class="btn btn-primary btn-glow" onclick="closeWelcome()">I Commit to Honesty</button>
-            </div>
+            <button class="btn btn-primary" onclick="closeWelcome()" style="width: 100%; justify-content: center;">Begin
+                Assessment</button>
         </div>
     </div>
 
-    <main class="container">
-        <header class="header">
-            <div class="logo-container">
-                <span class="logo-icon">∆</span>
-                <div>
-                    <h1>DAT <span class="accent">v1.1</span></h1>
-                    <p class="subtitle">Desirability Assessment Tool</p>
-                </div>
+    <div class="app-container">
+        <header class="wizard-header">
+            <div class="logo-area">
+                <div class="logo-icon">∆</div>
+                <h1>Desirability Assessment Tool</h1>
             </div>
-            <div class="header-actions">
-                <p id="current-date" class="text-muted"></p>
-            </div>
+            <p
+                style="color: var(--text-muted); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem;">
+                Innovation Audit Framework</p>
         </header>
 
-        <section class="setup-card glass">
-            <div class="card-header">
-                <h3><span class="icon">⚙️</span> Configuration</h3>
-                <p>Define your venture details to begin the assessment.</p>
-            </div>
-            <div class="input-row">
-                <div class="input-group">
-                    <label for="problem-statement">Venture / Problem</label>
-                    <input type="text" id="problem-statement" placeholder="What problem are you solving?"
-                        autocomplete="off">
+        <main class="wizard-card">
+            <div class="progress-stepper">
+                <div class="step-indicator active" data-nav-step="1">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Setup</span>
                 </div>
-                <div class="input-group">
-                    <label for="team-name">Squad / Team</label>
-                    <input type="text" id="team-name" placeholder="Team name" autocomplete="off">
+                <div class="step-indicator" data-nav-step="2">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Problem</span>
                 </div>
-                <div class="input-group">
-                    <label for="evaluator-name">Evaluator</label>
-                    <input type="text" id="evaluator-name" placeholder="Your name" autocomplete="off">
+                <div class="step-indicator" data-nav-step="4">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Solution</span>
                 </div>
-            </div>
-        </section>
-
-        <div class="dashboard-grid">
-            <div class="form-side">
-                <form id="dat-form">
-                    <!-- Pillar 1: Problem Understanding -->
-                    <div class="pillar-section" data-pillar="Problem Understanding">
-                        <div class="pillar-header">
-                            <span class="pillar-badge">Pillar 1</span>
-                            <h2>Problem Understanding</h2>
-                            <p>Does the customer know they have this problem?</p>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">1</span>
-                                <h3>Awareness</h3>
-                            </div>
-                            <p class="q-text">"To what extent do customers recognize they have this specific problem?"
-                            </p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Not at all</span>
-                                    <div class="options">
-                                        <input type="radio" name="q1" value="1" id="q1-1"><label for="q1-1">1</label>
-                                        <input type="radio" name="q1" value="1.5" id="q1-1-5"><label
-                                            for="q1-1-5">1.5</label>
-                                        <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">2</label>
-                                        <input type="radio" name="q1" value="2.5" id="q1-2-5"><label
-                                            for="q1-2-5">2.5</label>
-                                        <input type="radio" name="q1" value="3" id="q1-3" checked><label
-                                            for="q1-3">3</label>
-                                        <input type="radio" name="q1" value="3.5" id="q1-3-5"><label
-                                            for="q1-3-5">3.5</label>
-                                        <input type="radio" name="q1" value="4" id="q1-4"><label for="q1-4">4</label>
-                                        <input type="radio" name="q1" value="4.5" id="q1-4-5"><label
-                                            for="q1-4-5">4.5</label>
-                                        <input type="radio" name="q1" value="5" id="q1-5"><label for="q1-5">5</label>
-                                    </div>
-                                    <span>Completely</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">2</span>
-                                <h3>Clarity</h3>
-                            </div>
-                            <p class="q-text">"How clearly defined is the problem from the customer's perspective?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Vague</span>
-                                    <div class="options">
-                                        <input type="radio" name="q2" value="1" id="q2-1"><label for="q2-1">1</label>
-                                        <input type="radio" name="q2" value="1.5" id="q2-1-5"><label
-                                            for="q2-1-5">1.5</label>
-                                        <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">2</label>
-                                        <input type="radio" name="q2" value="2.5" id="q2-2-5"><label
-                                            for="q2-2-5">2.5</label>
-                                        <input type="radio" name="q2" value="3" id="q2-3" checked><label
-                                            for="q2-3">3</label>
-                                        <input type="radio" name="q2" value="3.5" id="q2-3-5"><label
-                                            for="q2-3-5">3.5</label>
-                                        <input type="radio" name="q2" value="4" id="q2-4"><label for="q2-4">4</label>
-                                        <input type="radio" name="q2" value="4.5" id="q2-4-5"><label
-                                            for="q2-4-5">4.5</label>
-                                        <input type="radio" name="q2" value="5" id="q2-5"><label for="q2-5">5</label>
-                                    </div>
-                                    <span>Extremely Clear</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pillar 2: Solution Search -->
-                    <div class="pillar-section" data-pillar="Solution Search">
-                        <div class="pillar-header">
-                            <span class="pillar-badge">Pillar 2</span>
-                            <h2>Solution Search</h2>
-                            <p>Are customers actively finding solutions (and struggling)?</p>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">3</span>
-                                <h3>Effort</h3>
-                            </div>
-                            <p class="q-text">"How much effort do customers currently expend to solve this problem?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Minimal</span>
-                                    <div class="options">
-                                        <input type="radio" name="q3" value="1" id="q3-1"><label for="q3-1">1</label>
-                                        <input type="radio" name="q3" value="1.5" id="q3-1-5"><label
-                                            for="q3-1-5">1.5</label>
-                                        <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">2</label>
-                                        <input type="radio" name="q3" value="2.5" id="q3-2-5"><label
-                                            for="q3-2-5">2.5</label>
-                                        <input type="radio" name="q3" value="3" id="q3-3" checked><label
-                                            for="q3-3">3</label>
-                                        <input type="radio" name="q3" value="3.5" id="q3-3-5"><label
-                                            for="q3-3-5">3.5</label>
-                                        <input type="radio" name="q3" value="4" id="q3-4"><label for="q3-4">4</label>
-                                        <input type="radio" name="q3" value="4.5" id="q3-4-5"><label
-                                            for="q3-4-5">4.5</label>
-                                        <input type="radio" name="q3" value="5" id="q3-5"><label for="q3-5">5</label>
-                                    </div>
-                                    <span>Significant</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">4</span>
-                                <h3>Frustration</h3>
-                            </div>
-                            <p class="q-text">"How frustrating is the current solution-finding process?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Not Frustrating</span>
-                                    <div class="options">
-                                        <input type="radio" name="q4" value="1" id="q4-1"><label for="q4-1">1</label>
-                                        <input type="radio" name="q4" value="1.5" id="q4-1-5"><label
-                                            for="q4-1-5">1.5</label>
-                                        <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">2</label>
-                                        <input type="radio" name="q4" value="2.5" id="q4-2-5"><label
-                                            for="q4-2-5">2.5</label>
-                                        <input type="radio" name="q4" value="3" id="q4-3" checked><label
-                                            for="q4-3">3</label>
-                                        <input type="radio" name="q4" value="3.5" id="q4-3-5"><label
-                                            for="q4-3-5">3.5</label>
-                                        <input type="radio" name="q4" value="4" id="q4-4"><label for="q4-4">4</label>
-                                        <input type="radio" name="q4" value="4.5" id="q4-4-5"><label
-                                            for="q4-4-5">4.5</label>
-                                        <input type="radio" name="q4" value="5" id="q4-5"><label for="q4-5">5</label>
-                                    </div>
-                                    <span>Extremely Frustrating</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pillar 3: Willingness to Pay -->
-                    <div class="pillar-section" data-pillar="Willingness to Pay">
-                        <div class="pillar-header">
-                            <span class="pillar-badge">Pillar 3</span>
-                            <h2>Willingness to Pay</h2>
-                            <p>Are customers willing to pay for a solution to this problem?</p>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">5</span>
-                                <h3>Value Perception</h3>
-                            </div>
-                            <p class="q-text">"How much value do customers believe they receive from a solution?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Little Value</span>
-                                    <div class="options">
-                                        <input type="radio" name="q5" value="1" id="q5-1"><label for="q5-1">1</label>
-                                        <input type="radio" name="q5" value="1.5" id="q5-1-5"><label
-                                            for="q5-1-5">1.5</label>
-                                        <input type="radio" name="q5" value="2" id="q5-2"><label for="q5-2">2</label>
-                                        <input type="radio" name="q5" value="2.5" id="q5-2-5"><label
-                                            for="q5-2-5">2.5</label>
-                                        <input type="radio" name="q5" value="3" id="q5-3" checked><label
-                                            for="q5-3">3</label>
-                                        <input type="radio" name="q5" value="3.5" id="q5-3-5"><label
-                                            for="q5-3-5">3.5</label>
-                                        <input type="radio" name="q5" value="4" id="q5-4"><label for="q5-4">4</label>
-                                        <input type="radio" name="q5" value="4.5" id="q5-4-5"><label
-                                            for="q5-4-5">4.5</label>
-                                        <input type="radio" name="q5" value="5" id="q5-5"><label for="q5-5">5</label>
-                                    </div>
-                                    <span>High Value</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">6</span>
-                                <h3>Price Sensitivity</h3>
-                            </div>
-                            <p class="q-text">"How sensitive are customers to the price of a solution?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Very Sensitive</span>
-                                    <div class="options">
-                                        <input type="radio" name="q6" value="1" id="q6-1"><label for="q6-1">1</label>
-                                        <input type="radio" name="q6" value="1.5" id="q6-1-5"><label
-                                            for="q6-1-5">1.5</label>
-                                        <input type="radio" name="q6" value="2" id="q6-2"><label for="q6-2">2</label>
-                                        <input type="radio" name="q6" value="2.5" id="q6-2-5"><label
-                                            for="q6-2-5">2.5</label>
-                                        <input type="radio" name="q6" value="3" id="q6-3" checked><label
-                                            for="q6-3">3</label>
-                                        <input type="radio" name="q6" value="3.5" id="q6-3-5"><label
-                                            for="q6-3-5">3.5</label>
-                                        <input type="radio" name="q6" value="4" id="q6-4"><label for="q6-4">4</label>
-                                        <input type="radio" name="q6" value="4.5" id="q6-4-5"><label
-                                            for="q6-4-5">4.5</label>
-                                        <input type="radio" name="q6" value="5" id="q6-5"><label for="q6-5">5</label>
-                                    </div>
-                                    <span>Not Sensitive</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pillar 4: Market Viability -->
-                    <div class="pillar-section" data-pillar="Market Viability">
-                        <div class="pillar-header">
-                            <span class="pillar-badge">Pillar 4</span>
-                            <h2>Market Viability</h2>
-                            <p>Is the problem large enough to support a profitable solution?</p>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">7</span>
-                                <h3>TAM (Total Addressable Market)</h3>
-                            </div>
-                            <p class="q-text">"What is the total potential market for a solution to this problem?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Very Small</span>
-                                    <div class="options">
-                                        <input type="radio" name="q7" value="1" id="q7-1"><label for="q7-1">1</label>
-                                        <input type="radio" name="q7" value="1.5" id="q7-1-5"><label
-                                            for="q7-1-5">1.5</label>
-                                        <input type="radio" name="q7" value="2" id="q7-2"><label for="q7-2">2</label>
-                                        <input type="radio" name="q7" value="2.5" id="q7-2-5"><label
-                                            for="q7-2-5">2.5</label>
-                                        <input type="radio" name="q7" value="3" id="q7-3" checked><label
-                                            for="q7-3">3</label>
-                                        <input type="radio" name="q7" value="3.5" id="q7-3-5"><label
-                                            for="q7-3-5">3.5</label>
-                                        <input type="radio" name="q7" value="4" id="q7-4"><label for="q7-4">4</label>
-                                        <input type="radio" name="q7" value="4.5" id="q7-4-5"><label
-                                            for="q7-4-5">4.5</label>
-                                        <input type="radio" name="q7" value="5" id="q7-5"><label for="q7-5">5</label>
-                                    </div>
-                                    <span>Very Large</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">8</span>
-                                <h3>SAM (Serviceable Available Market)</h3>
-                            </div>
-                            <p class="q-text">"Considering current resources, how much of the TAM can we realistically
-                                reach?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Very Small</span>
-                                    <div class="options">
-                                        <input type="radio" name="q8" value="1" id="q8-1"><label for="q8-1">1</label>
-                                        <input type="radio" name="q8" value="1.5" id="q8-1-5"><label
-                                            for="q8-1-5">1.5</label>
-                                        <input type="radio" name="q8" value="2" id="q8-2"><label for="q8-2">2</label>
-                                        <input type="radio" name="q8" value="2.5" id="q8-2-5"><label
-                                            for="q8-2-5">2.5</label>
-                                        <input type="radio" name="q8" value="3" id="q8-3" checked><label
-                                            for="q8-3">3</label>
-                                        <input type="radio" name="q8" value="3.5" id="q8-3-5"><label
-                                            for="q8-3-5">3.5</label>
-                                        <input type="radio" name="q8" value="4" id="q8-4"><label for="q8-4">4</label>
-                                        <input type="radio" name="q8" value="4.5" id="q8-4-5"><label
-                                            for="q8-4-5">4.5</label>
-                                        <input type="radio" name="q8" value="5" id="q8-5"><label for="q8-5">5</label>
-                                    </div>
-                                    <span>Very Large</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="question-card glass">
-                            <div class="question-header">
-                                <span class="q-num">9</span>
-                                <h3>SOM (Serviceable Obtainable Market)</h3>
-                            </div>
-                            <p class="q-text">"What portion of SAM do we realistically expect to capture?"</p>
-                            <div class="rating-container">
-                                <div class="rating-scale">
-                                    <span>Very Small</span>
-                                    <div class="options">
-                                        <input type="radio" name="q9" value="1" id="q9-1"><label for="q9-1">1</label>
-                                        <input type="radio" name="q9" value="1.5" id="q9-1-5"><label
-                                            for="q9-1-5">1.5</label>
-                                        <input type="radio" name="q9" value="2" id="q9-2"><label for="q9-2">2</label>
-                                        <input type="radio" name="q9" value="2.5" id="q9-2-5"><label
-                                            for="q9-2-5">2.5</label>
-                                        <input type="radio" name="q9" value="3" id="q9-3" checked><label
-                                            for="q9-3">3</label>
-                                        <input type="radio" name="q9" value="3.5" id="q9-3-5"><label
-                                            for="q9-3-5">3.5</label>
-                                        <input type="radio" name="q9" value="4" id="q9-4"><label for="q9-4">4</label>
-                                        <input type="radio" name="q9" value="4.5" id="q9-4-5"><label
-                                            for="q9-4-5">4.5</label>
-                                        <input type="radio" name="q9" value="5" id="q9-5"><label for="q9-5">5</label>
-                                    </div>
-                                    <span>Very Large</span>
-                                </div>
-                                <textarea placeholder="Justification / Notes..." class="notes-input"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <div class="step-indicator" data-nav-step="6">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Value</span>
+                </div>
+                <div class="step-indicator" data-nav-step="8">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Market</span>
+                </div>
+                <div class="step-indicator" data-nav-step="11">
+                    <div class="step-dot"></div>
+                    <span class="step-label">Result</span>
+                </div>
             </div>
 
-            <div class="results-side">
-                <div class="sticky-results glass">
-                    <div class="score-display">
-                        <div class="gauge-container">
-                            <svg class="gauge" viewBox="0 0 100 100">
-                                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
-                                <circle class="gauge-fill" id="gauge-fill-circle" cx="50" cy="50" r="45"></circle>
+            <form id="dat-form">
+                <!-- Step 1: Venture Setup -->
+                <section class="step-pane active" data-step="1">
+                    <h2 class="q-title">Venture Definition</h2>
+                    <p class="q-desc">Initialize the assessment by defining the target venture parameters.</p>
+
+                    <div class="field-group">
+                        <label>Core Problem / Venture Thesis</label>
+                        <input type="text" id="problem-statement" class="input-field"
+                            placeholder="e.g., Optimizing solar panel efficiency for urban apartments">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="field-group">
+                            <label>Team Name</label>
+                            <input type="text" id="team-name" class="input-field" placeholder="e.g., Green Energy Team">
+                        </div>
+                        <div class="field-group">
+                            <label>Principal Evaluator</label>
+                            <input type="text" id="evaluator-name" class="input-field" placeholder="Your Name">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pillar 1: Problem Understanding -->
+                <section class="step-pane" data-step="2">
+                    <h3 class="q-title">1. Awareness</h3>
+                    <p class="q-desc">"To what extent do potential customers recognize they have this specific problem?"
+                    </p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q1" value="1" id="q1-1"><label
+                                for="q1-1"><span class="radio-circle"></span> No recognition</label></div>
+                        <div class="selection-item"><input type="radio" name="q1" value="2" id="q1-2"><label
+                                for="q1-2"><span class="radio-circle"></span> Vague acknowledgement</label></div>
+                        <div class="selection-item"><input type="radio" name="q1" value="3" id="q1-3"><label
+                                for="q1-3"><span class="radio-circle"></span> Aware when prompted</label></div>
+                        <div class="selection-item"><input type="radio" name="q1" value="4" id="q1-4"><label
+                                for="q1-4"><span class="radio-circle"></span> Active recognition</label></div>
+                        <div class="selection-item"><input type="radio" name="q1" value="5" id="q1-5"><label
+                                for="q1-5"><span class="radio-circle"></span> Immediate recognition</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j1" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="3">
+                    <h3 class="q-title">2. Clarity</h3>
+                    <p class="q-desc">"How clearly can this problem be described to target customers?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q2" value="1" id="q2-1"><label
+                                for="q2-1"><span class="radio-circle"></span> Highly complex/jargon</label></div>
+                        <div class="selection-item"><input type="radio" name="q2" value="2" id="q2-2"><label
+                                for="q2-2"><span class="radio-circle"></span> Difficult to explain</label></div>
+                        <div class="selection-item"><input type="radio" name="q2" value="3" id="q2-3"><label
+                                for="q2-3"><span class="radio-circle"></span> Moderately clear</label></div>
+                        <div class="selection-item"><input type="radio" name="q2" value="4" id="q2-4"><label
+                                for="q2-4"><span class="radio-circle"></span> Easy to describe</label></div>
+                        <div class="selection-item"><input type="radio" name="q2" value="5" id="q2-5"><label
+                                for="q2-5"><span class="radio-circle"></span> Immediately obvious</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j2" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="4">
+                    <h3 class="q-title">3. Effort</h3>
+                    <p class="q-desc">"How much effort do customers currently expend to solve this problem?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q3" value="1" id="q3-1"><label
+                                for="q3-1"><span class="radio-circle"></span> Minimal/Zero effort</label></div>
+                        <div class="selection-item"><input type="radio" name="q3" value="2" id="q3-2"><label
+                                for="q3-2"><span class="radio-circle"></span> Basic search only</label></div>
+                        <div class="selection-item"><input type="radio" name="q3" value="3" id="q3-3"><label
+                                for="q3-3"><span class="radio-circle"></span> Moderate time spent</label></div>
+                        <div class="selection-item"><input type="radio" name="q3" value="4" id="q3-4"><label
+                                for="q3-4"><span class="radio-circle"></span> Active paid trials</label></div>
+                        <div class="selection-item"><input type="radio" name="q3" value="5" id="q3-5"><label
+                                for="q3-5"><span class="radio-circle"></span> Significant time/money</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j3" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="5">
+                    <h3 class="q-title">4. Frustration</h3>
+                    <p class="q-desc">"How frustrating is the current process of finding or using a solution?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q4" value="1" id="q4-1"><label
+                                for="q4-1"><span class="radio-circle"></span> Not frustrating at all</label></div>
+                        <div class="selection-item"><input type="radio" name="q4" value="2" id="q4-2"><label
+                                for="q4-2"><span class="radio-circle"></span> Minor inconveniences</label></div>
+                        <div class="selection-item"><input type="radio" name="q4" value="3" id="q4-3"><label
+                                for="q4-3"><span class="radio-circle"></span> Notable friction</label></div>
+                        <div class="selection-item"><input type="radio" name="q4" value="4" id="q4-4"><label
+                                for="q4-4"><span class="radio-circle"></span> Highly annoying</label></div>
+                        <div class="selection-item"><input type="radio" name="q4" value="5" id="q4-5"><label
+                                for="q4-5"><span class="radio-circle"></span> Extremely painful</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j4" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="6">
+                    <h3 class="q-title">5. Value Perception</h3>
+                    <p class="q-desc">"How much value do customers believe they receive from a potential solution?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q5" value="1" id="q5-1"><label
+                                for="q5-1"><span class="radio-circle"></span> Little to no value</label></div>
+                        <div class="selection-item"><input type="radio" name="q5" value="2" id="q5-2"><label
+                                for="q5-2"><span class="radio-circle"></span> Nice-to-have only</label></div>
+                        <div class="selection-item"><input type="radio" name="q5" value="3" id="q5-3"><label
+                                for="q5-3"><span class="radio-circle"></span> Clear quantifiable value</label></div>
+                        <div class="selection-item"><input type="radio" name="q5" value="4" id="q5-4"><label
+                                for="q5-4"><span class="radio-circle"></span> Significant ROI</label></div>
+                        <div class="selection-item"><input type="radio" name="q5" value="5" id="q5-5"><label
+                                for="q5-5"><span class="radio-circle"></span> Critical/Essential value</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j5" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="7">
+                    <h3 class="q-title">6. Price Sensitivity</h3>
+                    <p class="q-desc">"How sensitive are customers to the price of a potential solution?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q6" value="1" id="q6-1"><label
+                                for="q6-1"><span class="radio-circle"></span> Extremely sensitive</label></div>
+                        <div class="selection-item"><input type="radio" name="q6" value="2" id="q6-2"><label
+                                for="q6-2"><span class="radio-circle"></span> Budget conscious</label></div>
+                        <div class="selection-item"><input type="radio" name="q6" value="3" id="q6-3"><label
+                                for="q6-3"><span class="radio-circle"></span> Market average</label></div>
+                        <div class="selection-item"><input type="radio" name="q6" value="4" id="q6-4"><label
+                                for="q6-4"><span class="radio-circle"></span> Flexible for quality</label></div>
+                        <div class="selection-item"><input type="radio" name="q6" value="5" id="q6-5"><label
+                                for="q6-5"><span class="radio-circle"></span> Price is not a barrier</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j6" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="8">
+                    <h3 class="q-title">7. TAM (Market Size)</h3>
+                    <p class="q-desc">"What is the total size of the addressable problem market?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q7" value="1" id="q7-1"><label
+                                for="q7-1"><span class="radio-circle"></span> Very small/Niche</label></div>
+                        <div class="selection-item"><input type="radio" name="q7" value="2" id="q7-2"><label
+                                for="q7-2"><span class="radio-circle"></span> Specific segment only</label></div>
+                        <div class="selection-item"><input type="radio" name="q7" value="3" id="q7-3"><label
+                                for="q7-3"><span class="radio-circle"></span> Moderate market size</label></div>
+                        <div class="selection-item"><input type="radio" name="q7" value="4" id="q7-4"><label
+                                for="q7-4"><span class="radio-circle"></span> Large industry</label></div>
+                        <div class="selection-item"><input type="radio" name="q7" value="5" id="q7-5"><label
+                                for="q7-5"><span class="radio-circle"></span> Enormous global market</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j7" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="9">
+                    <h3 class="q-title">8. SAM (Serviceable Market)</h3>
+                    <p class="q-desc">"How much of this market can your channels realistically reach?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q8" value="1" id="q8-1"><label
+                                for="q8-1"><span class="radio-circle"></span> Minimal reach</label></div>
+                        <div class="selection-item"><input type="radio" name="q8" value="2" id="q8-2"><label
+                                for="q8-2"><span class="radio-circle"></span> Limited reach</label></div>
+                        <div class="selection-item"><input type="radio" name="q8" value="3" id="q8-3"><label
+                                for="q8-3"><span class="radio-circle"></span> Average reach</label></div>
+                        <div class="selection-item"><input type="radio" name="q8" value="4" id="q8-4"><label
+                                for="q8-4"><span class="radio-circle"></span> Strong reach capabilities</label></div>
+                        <div class="selection-item"><input type="radio" name="q8" value="5" id="q8-5"><label
+                                for="q8-5"><span class="radio-circle"></span> Complete market access</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j8" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <section class="step-pane" data-step="10">
+                    <h3 class="q-title">9. SOM (Obtainable Market)</h3>
+                    <p class="q-desc">"How much of reachable market can you realistically capture?"</p>
+                    <div class="selection-list">
+                        <div class="selection-item"><input type="radio" name="q9" value="1" id="q9-1"><label
+                                for="q9-1"><span class="radio-circle"></span> Small fraction</label></div>
+                        <div class="selection-item"><input type="radio" name="q9" value="2" id="q9-2"><label
+                                for="q9-2"><span class="radio-circle"></span> Notable niche</label></div>
+                        <div class="selection-item"><input type="radio" name="q9" value="3" id="q9-3"><label
+                                for="q9-3"><span class="radio-circle"></span> Competitive share</label></div>
+                        <div class="selection-item"><input type="radio" name="q9" value="4" id="q9-4"><label
+                                for="q9-4"><span class="radio-circle"></span> Market leader share</label></div>
+                        <div class="selection-item"><input type="radio" name="q9" value="5" id="q9-5"><label
+                                for="q9-5"><span class="radio-circle"></span> Dominant share</label></div>
+                    </div>
+                    <div class="field-group">
+                        <label>Justification & Evidence</label>
+                        <textarea id="j9" class="input-field" style="height: 100px;"
+                            placeholder="Provide evidence/notes for this rating..."></textarea>
+                    </div>
+                </section>
+
+                <!-- Final Result Step -->
+                <section class="step-pane" data-step="11">
+                    <div class="verdict-container">
+                        <span class="verdict-badge" id="status-badge">Verdict Calculation Pending</span>
+                        <div class="premium-score-ring">
+                            <svg viewBox="0 0 200 200" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="var(--glass-border)"
+                                    stroke-width="8"></circle>
+                                <circle id="gauge-fill-circle" cx="100" cy="100" r="90" fill="none"
+                                    stroke="var(--primary)" stroke-width="10" stroke-linecap="round"
+                                    stroke-dasharray="565" stroke-dashoffset="565"
+                                    style="transition: stroke-dashoffset 2s ease;"></circle>
                             </svg>
-                            <div class="score-value">
-                                <span id="total-score">0.0</span>
-                                <span class="max-score">/ 45</span>
+                            <div class="score-number">
+                                <span class="score-val" id="total-score">0</span>
+                                <span class="score-max">/ 45 MAX</span>
                             </div>
                         </div>
-                        <div class="status-badge" id="status-badge">Awaiting Assessment</div>
-                    </div>
 
-                    <div class="summary-details">
-                        <div class="stat-row">
-                            <div class="stat-info">
-                                <span>Validation Match</span>
-                                <span id="accuracy-percent">0%</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-bar" id="main-progress-bar"></div>
-                            </div>
-                        </div>
                         <div class="interpretation-box">
-                            <p class="interpretation" id="interpretation">
-                                Start by rating the questions on the left to see your venture's desirability score.
+                            <p id="interpretation"
+                                style="font-size: 1.4rem; font-weight: 500; color: var(--text-main); line-height: 1.6;">
                             </p>
                         </div>
+
+                        <div class="metrics-grid" id="pillar-breakdown">
+                            <!-- Injected breakdown -->
+                        </div>
+
+                        <div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 3rem;">
+                            <button type="button" class="btn btn-primary" onclick="generateReport()">
+                                <span>📄 EXPORT PROFESSIONAL REPORT</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <span>RESET</span>
+                            </button>
+                        </div>
                     </div>
+                </section>
 
-                    <div class="actions">
-                        <button type="button" class="btn btn-primary btn-glow" id="submit-form"
-                            onclick="generateReport()">
-                            <span>✨ Generate Report</span>
-                        </button>
-                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                            <span>🔄 Reset</span>
-                        </button>
-                    </div>
+                <!-- Navigation -->
+                <div class="nav-footer" id="nav-btns">
+                    <button type="button" class="btn btn-secondary" id="prev-btn" onclick="prevStep()">
+                        <span>← BACK</span>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="next-btn" onclick="nextStep()">
+                        <span>NEXT STEP →</span>
+                    </button>
                 </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader-visual"></div>
+        <p class="loading-text">Generating Professional Brief...</p>
+    </div>
+
+    <div id="report-modal" class="modal-overlay">
+        <div class="modal-content report-modal-container">
+            <div class="modal-header">
+                <span class="modal-title">STRATEGIC BRIEF PREVIEW</span>
+                <button onclick="closeModal()" class="close-modal-btn">×</button>
+            </div>
+            <div id="report-content" class="report-viewer">
+                <!-- Printable report will be injected here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">DISCARD</button>
+                <button class="btn btn-primary" onclick="downloadReport()">DOWNLOAD STRATEGIC BRIEF (PDF)</button>
             </div>
         </div>
+    </div>
 
-        <!-- Loading Overlay -->
-        <div id="loading-overlay" class="loading-overlay">
-            <div class="loader-content">
-                <div class="scanner-line"></div>
-                <div class="spinner"></div>
-                <p>Analyzing problem statement viability...</p>
-                <div class="loading-bar-container">
-                    <div id="loading-bar-fill" class="loading-bar-fill"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Warning Modal -->
-        <div id="warning-modal" class="modal warning-modal">
-            <div class="modal-content warning-card glass">
-                <div class="warning-icon">⚠️</div>
-                <h2>Ethical Self-Assessment Notice</h2>
-                <p>We noticed some high scores. Remember: <strong>Inflating these numbers is only cheating
-                        yourself.</strong></p>
-                <p class="warning-sub">A solution based on false data will fail in the real market. Be brutally honest
-                    to build something that actually works.</p>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="proceedToReport()">I Understand, Show My Report</button>
-                    <button class="btn btn-secondary" onclick="closeWarning()">Let Me Review My Scores</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Report Modal -->
-        <div id="report-modal" class="modal">
-            <div class="modal-content glass report-modal-content">
-                <span class="close-modal" onclick="closeModal()">&times;</span>
-                <div id="report-content">
-                    <!-- Dynamic content will be injected here -->
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="downloadReport()">Download PDF Report</button>
-                </div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            <p>&copy; 2026 DAT Framework. Built for Innovation Champions.</p>
-        </footer>
-    </main>
-
-    <!-- html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
