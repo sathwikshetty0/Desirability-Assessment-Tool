@@ -18,35 +18,119 @@
 
 <body>
     <div class="background-blobs">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
+        <div class="blob-container">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <!-- Desktop Particles -->
+            <div class="particle p1"></div>
+            <div class="particle p2"></div>
+            <div class="particle p3"></div>
+        </div>
+        <div class="background-mesh"></div>
     </div>
 
     <!-- Theme Control -->
     <div class="top-controls">
         <button class="control-btn" onclick="toggleTheme()" id="theme-toggle" title="Toggle Mode">
-            <span id="theme-icon">🌙</span>
+            <span id="theme-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg></span>
         </button>
     </div>
 
-    <!-- Modals -->
-    <div id="welcome-modal" class="modal-overlay" style="display: flex;">
-        <div class="modal-content welcome-card" style="text-align: center;">
-            <span class="welcome-icon">∆</span>
-            <h2 class="welcome-title">DAT Assessment</h2>
-            <p style="color: var(--text-dim); margin-bottom: 2rem;">Desirability Assessment Tool - Professional
-                Validation Framework</p>
-            <div class="warning-alert" style="text-align: left;">
-                <p><strong>TRUTH ADVISORY:</strong></p>
-                <p>Strategic success depends on empirical accuracy. Please provide brutal honesty and justifications for
-                    each metric to ensure a valid report.</p>
+    <!-- ======= LOADING SCREEN ======= -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <div class="splash-icon">∆</div>
+                <div class="splash-rings">
+                    <div class="splash-ring ring-1"></div>
+                    <div class="splash-ring ring-2"></div>
+                    <div class="splash-ring ring-3"></div>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="closeWelcome()" style="width: 100%; justify-content: center;">Begin
-                Assessment</button>
+            <h1 class="splash-title">DAT</h1>
+            <p class="splash-subtitle">Desirability Assessment Tool</p>
+            <div class="splash-loader">
+                <div class="splash-loader-bar"></div>
+            </div>
         </div>
     </div>
 
-    <div class="app-container">
+    <!-- ======= LANDING PAGE ======= -->
+    <div id="landing-page" class="landing-page" style="display: none;">
+        <div class="landing-container">
+            <!-- 3D Rotating Prism -->
+            <div class="prism-scene">
+                <div class="prism">
+                    <div class="prism-face face-front"></div>
+                    <div class="prism-face face-left"></div>
+                    <div class="prism-face face-right"></div>
+                    <div class="prism-face face-bottom"></div>
+                </div>
+            </div>
+
+            <div class="landing-badge reveal-item">INNOVATION FRAMEWORK</div>
+            <h1 class="landing-title reveal-item">Desirability<br>Assessment Tool</h1>
+            <p class="landing-desc reveal-item">A structured framework to evaluate market desirability across 9 critical
+                dimensions — from problem awareness to addressable market sizing.</p>
+
+
+            <div class="landing-pillars">
+                <div class="pillar-card reveal-item">
+                    <div class="pillar-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--primary-light)" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <circle cx="12" cy="12" r="6" />
+                            <circle cx="12" cy="12" r="2" />
+                        </svg></div>
+                    <h3>Problem</h3>
+                    <p>Awareness, clarity & friction analysis</p>
+                </div>
+                <div class="pillar-card reveal-item">
+                    <div class="pillar-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--primary-light)" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg></div>
+                    <h3>Value</h3>
+                    <p>Perception, willingness to pay & pricing</p>
+                </div>
+                <div class="pillar-card reveal-item">
+                    <div class="pillar-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--primary-light)" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg></div>
+                    <h3>Market</h3>
+                    <p>TAM, SAM & SOM sizing metrics</p>
+                </div>
+            </div>
+
+            <div class="landing-advisory reveal-item">
+                <strong>TRUTH ADVISORY:</strong> Strategic success depends on empirical accuracy. Provide honest
+                justifications for each metric.
+            </div>
+
+            <div class="cta-wrapper reveal-item">
+                <button class="landing-cta" onclick="startAssessment()">
+                    <span>Start Evaluation</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container" style="display: none;">
         <header class="wizard-header">
             <div class="logo-area">
                 <div class="logo-icon">∆</div>
@@ -340,7 +424,16 @@
 
                         <div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 3rem;">
                             <button type="button" class="btn btn-primary" onclick="generateReport()">
-                                <span>📄 EXPORT PROFESSIONAL REPORT</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                    style="margin-right: 8px;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                    <polyline points="10 9 9 9 8 9" />
+                                </svg>
+                                <span>EXPORT PROFESSIONAL REPORT</span>
                             </button>
                             <button type="button" class="btn btn-secondary" onclick="resetForm()">
                                 <span>RESET</span>

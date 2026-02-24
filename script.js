@@ -15,22 +15,63 @@ document.addEventListener('DOMContentLoaded', () => {
     inputs.forEach(input => {
         input.addEventListener('change', updateScore);
     });
+
+    // Splash screen → Landing page transition
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        splash.classList.add('splash-fade-out');
+        setTimeout(() => {
+            splash.style.display = 'none';
+            const landing = document.getElementById('landing-page');
+            landing.style.display = 'flex';
+            // Trigger entrance animation
+            requestAnimationFrame(() => {
+                landing.classList.add('landing-visible');
+            });
+        }, 600);
+    }, 2500);
+
+    // Desktop Parallax Effect
+    if (window.innerWidth >= 1024) {
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelector('.blob-container');
+            if (blobs) {
+                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+                blobs.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+    }
 });
 
 function toggleTheme() {
     const html = document.documentElement;
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
+    setTheme(newTheme);
 }
+
+function setTheme(theme) {
+    const html = document.documentElement;
+    if (html.getAttribute('data-theme') === theme) return;
+
+    html.classList.add('theme-transition');
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeIcon(theme);
+
+    setTimeout(() => {
+        html.classList.remove('theme-transition');
+    }, 500);
+}
+
 
 function updateThemeIcon(theme) {
     const icon = document.getElementById('theme-icon');
     if (icon) {
-        icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        icon.innerHTML = theme === 'dark'
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
     }
 }
 
@@ -326,8 +367,15 @@ function proceedToReport() {
     document.getElementById('report-modal').style.display = 'flex';
 }
 
-function closeWelcome() {
-    document.getElementById('welcome-modal').style.display = 'none';
+function startAssessment() {
+    const landing = document.getElementById('landing-page');
+    landing.classList.add('landing-exit');
+    setTimeout(() => {
+        landing.style.display = 'none';
+        const app = document.getElementById('app-container');
+        app.style.display = 'block';
+        app.classList.add('app-enter');
+    }, 500);
 }
 
 function closeModal() {
