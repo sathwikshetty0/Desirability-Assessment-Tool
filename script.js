@@ -7,13 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
 
-    updateScore();
+    // Load saved state
+    loadState();
     updateWizard();
+    initParticles();
 
     // Event listeners for radio inputs
-    const inputs = document.querySelectorAll('input[type="radio"]');
+    const inputs = document.querySelectorAll('input[type="radio"], input[type="text"], textarea');
     inputs.forEach(input => {
-        input.addEventListener('change', updateScore);
+        input.addEventListener('change', () => {
+            updateScore();
+            saveState();
+        });
+        if (input.tagName === 'TEXTAREA' || (input.tagName === 'INPUT' && input.type === 'text')) {
+            input.addEventListener('input', () => {
+                saveState();
+                if (input.tagName === 'TEXTAREA') updateWordCount(input);
+            });
+        }
     });
 
     // Splash screen → Landing page transition
@@ -24,25 +35,85 @@ document.addEventListener('DOMContentLoaded', () => {
             splash.style.display = 'none';
             const landing = document.getElementById('landing-page');
             landing.style.display = 'flex';
-            // Trigger entrance animation
             requestAnimationFrame(() => {
                 landing.classList.add('landing-visible');
             });
         }, 600);
     }, 2500);
 
-    // Desktop Parallax Effect
+    // Desktop Parallax Effect (Refined)
     if (window.innerWidth >= 1024) {
         document.addEventListener('mousemove', (e) => {
-            const blobs = document.querySelector('.blob-container');
-            if (blobs) {
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-                blobs.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            }
+            const blobs = document.querySelectorAll('.mesh-blob');
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+            blobs.forEach((blob, idx) => {
+                const factor = (idx + 1) * 0.5;
+                blob.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+            });
         });
     }
 });
+
+function initParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    const count = 25;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.top = `${Math.random() * 100}%`;
+        p.style.animationDelay = `${Math.random() * 15}s`;
+        p.style.animationDuration = `${10 + Math.random() * 20}s`;
+        container.appendChild(p);
+    }
+}
+
+// Persistence Logic
+function saveState() {
+    const formData = {};
+    const inputs = document.querySelectorAll('input[type="radio"], input[type="text"], textarea');
+    inputs.forEach(input => {
+        if (input.type === 'radio') {
+            if (input.checked) formData[input.name] = input.value;
+        } else {
+            formData[input.id] = input.value;
+        }
+    });
+    localStorage.setItem('dat_assessment_state', JSON.stringify(formData));
+}
+
+function loadState() {
+    const saved = localStorage.getItem('dat_assessment_state');
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    Object.keys(data).forEach(key => {
+        const input = document.getElementById(key);
+        if (input) {
+            input.value = data[key];
+            if (input.tagName === 'TEXTAREA') updateWordCount(input);
+        } else {
+            // Check radio buttons
+            const radio = document.querySelector(`input[name="${key}"][value="${data[key]}"]`);
+            if (radio) radio.checked = true;
+        }
+    });
+    updateScore();
+}
+
+function updateWordCount(textarea) {
+    const id = textarea.id.replace('j', 'c');
+    const counter = document.getElementById(id);
+    if (!counter) return;
+    const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    counter.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+    if (words >= 10) counter.classList.add('good');
+    else counter.classList.remove('good');
+}
 
 function toggleTheme() {
     const html = document.documentElement;
@@ -376,6 +447,51 @@ function startAssessment() {
         app.style.display = 'block';
         app.classList.add('app-enter');
     }, 500);
+    // Success Celebration
+    if (score >= 33) {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#6366f1', '#22d3ee', '#f472b6']
+        });
+    }
+
+    // Auto-sync to Google Sheets (Simulated)
+    syncToGoogleSheets({
+        venture: document.getElementById('problem-statement').value,
+        evaluator: document.getElementById('evaluator-name').value,
+        score: score,
+        timestamp: new Date().toISOString()
+    });
+}
+
+async function syncToGoogleSheets(data) {
+    console.log('Syncing to Google Sheets...', data);
+    const overlay = document.getElementById('loading-overlay');
+    const statusText = document.getElementById('loading-status');
+
+    // Prepare for sync step
+    overlay.classList.add('sync-active');
+    statusText.textContent = "Syncing Data to Cloud...";
+
+    try {
+        // Replace with actual Google Apps Script Web App URL
+        const SHEET_URL = "https://script.google.com/macros/s/PLACEHOLDER/exec";
+
+        // Simulating network delay for professional feel
+        await new Promise(r => setTimeout(r, 1500));
+
+        // In real use:
+        // await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(data) });
+
+        console.log('Sync Complete');
+    } catch (e) {
+        console.error('Sync Failed', e);
+    } finally {
+        overlay.classList.remove('sync-active');
+        statusText.textContent = "Finalizing Report...";
+    }
 }
 
 function closeModal() {
@@ -426,7 +542,8 @@ function animateNumber(element, target) {
 }
 
 function resetForm() {
-    if (confirm("Reset assessment? All data will be lost.")) {
+    if (confirm("Reset assessment? All saved data will be cleared.")) {
+        localStorage.removeItem('dat_assessment_state');
         location.reload();
     }
 }

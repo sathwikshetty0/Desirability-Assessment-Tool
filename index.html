@@ -14,19 +14,16 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%236366f1;stop-opacity:1' /><stop offset='100%' style='stop-color:%2322d3ee;stop-opacity:1' /></linearGradient></defs><rect width='100' height='100' rx='20' fill='url(%23g)'/><path d='M50 25 L75 70 L25 70 Z' fill='none' stroke='white' stroke-width='8' stroke-linejoin='round'/><path d='M50 35 L68 65 L32 65 Z' fill='white'/></svg>">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
-    <div class="background-blobs">
-        <div class="blob-container">
-            <div class="blob blob-1"></div>
-            <div class="blob blob-2"></div>
-            <!-- Desktop Particles -->
-            <div class="particle p1"></div>
-            <div class="particle p2"></div>
-            <div class="particle p3"></div>
-        </div>
-        <div class="background-mesh"></div>
+    <div class="bg-mesh">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
+    <div class="particles" id="particles"></div>
     </div>
 
     <!-- Theme Control -->
@@ -195,7 +192,17 @@
 
                 <!-- Pillar 1: Problem Understanding -->
                 <section class="step-pane" data-step="2">
-                    <h3 class="q-title">1. Awareness</h3>
+                    <h3 class="q-title">1. Awareness
+                        <span class="info-trigger"
+                            data-tooltip="Measures if the market is consciously looking for a solution or needs education.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"To what extent do potential customers recognize they have this specific problem?"
                     </p>
                     <div class="selection-list">
@@ -211,14 +218,27 @@
                                 for="q1-5"><span class="radio-circle"></span> Immediate recognition</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c1">0 words</span>
+                        </div>
                         <textarea id="j1" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="3">
-                    <h3 class="q-title">2. Clarity</h3>
+                    <h3 class="q-title">2. Clarity
+                        <span class="info-trigger"
+                            data-tooltip="Assess if the value proposition is intuitive or requires complex explaining.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How clearly can this problem be described to target customers?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q2" value="1" id="q2-1"><label
@@ -233,14 +253,27 @@
                                 for="q2-5"><span class="radio-circle"></span> Immediately obvious</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c2">0 words</span>
+                        </div>
                         <textarea id="j2" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="4">
-                    <h3 class="q-title">3. Effort</h3>
+                    <h3 class="q-title">3. Effort
+                        <span class="info-trigger"
+                            data-tooltip="High effort currently spent solving this indicates a massive market demand.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How much effort do customers currently expend to solve this problem?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q3" value="1" id="q3-1"><label
@@ -255,14 +288,27 @@
                                 for="q3-5"><span class="radio-circle"></span> Significant time/money</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c3">0 words</span>
+                        </div>
                         <textarea id="j3" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="5">
-                    <h3 class="q-title">4. Frustration</h3>
+                    <h3 class="q-title">4. Frustration
+                        <span class="info-trigger"
+                            data-tooltip="Pain points in the current journey are your biggest opportunities for disruption.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How frustrating is the current process of finding or using a solution?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q4" value="1" id="q4-1"><label
@@ -277,14 +323,27 @@
                                 for="q4-5"><span class="radio-circle"></span> Extremely painful</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c4">0 words</span>
+                        </div>
                         <textarea id="j4" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="6">
-                    <h3 class="q-title">5. Value Perception</h3>
+                    <h3 class="q-title">5. Value Perception
+                        <span class="info-trigger"
+                            data-tooltip="Determines if your solution is a 'Vitamin' (nice to have) or a 'Painkiller' (urgent need).">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How much value do customers believe they receive from a potential solution?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q5" value="1" id="q5-1"><label
@@ -299,14 +358,27 @@
                                 for="q5-5"><span class="radio-circle"></span> Critical/Essential value</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c5">0 words</span>
+                        </div>
                         <textarea id="j5" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="7">
-                    <h3 class="q-title">6. Price Sensitivity</h3>
+                    <h3 class="q-title">6. Price Sensitivity
+                        <span class="info-trigger"
+                            data-tooltip="Low sensitivity means the problem is so severe that cost is secondary to the solution.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How sensitive are customers to the price of a potential solution?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q6" value="1" id="q6-1"><label
@@ -321,14 +393,27 @@
                                 for="q6-5"><span class="radio-circle"></span> Price is not a barrier</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c6">0 words</span>
+                        </div>
                         <textarea id="j6" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="8">
-                    <h3 class="q-title">7. TAM (Market Size)</h3>
+                    <h3 class="q-title">7. TAM (Market Size)
+                        <span class="info-trigger"
+                            data-tooltip="Total Addressable Market: The theoretical total demand if you had 100% market share.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"What is the total size of the addressable problem market?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q7" value="1" id="q7-1"><label
@@ -343,14 +428,27 @@
                                 for="q7-5"><span class="radio-circle"></span> Enormous global market</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c7">0 words</span>
+                        </div>
                         <textarea id="j7" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="9">
-                    <h3 class="q-title">8. SAM (Serviceable Market)</h3>
+                    <h3 class="q-title">8. SAM (Serviceable Market)
+                        <span class="info-trigger"
+                            data-tooltip="Serviceable Addressable Market: The portion of TAM that fits your business model and target geography.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How much of this market can your channels realistically reach?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q8" value="1" id="q8-1"><label
@@ -365,14 +463,27 @@
                                 for="q8-5"><span class="radio-circle"></span> Complete market access</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c8">0 words</span>
+                        </div>
                         <textarea id="j8" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
                 </section>
 
                 <section class="step-pane" data-step="10">
-                    <h3 class="q-title">9. SOM (Obtainable Market)</h3>
+                    <h3 class="q-title">9. SOM (Obtainable Market)
+                        <span class="info-trigger"
+                            data-tooltip="Serviceable Obtainable Market: The portion of SAM you can realistically capture within 1-3 years.">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                        </span>
+                    </h3>
                     <p class="q-desc">"How much of reachable market can you realistically capture?"</p>
                     <div class="selection-list">
                         <div class="selection-item"><input type="radio" name="q9" value="1" id="q9-1"><label
@@ -387,7 +498,10 @@
                                 for="q9-5"><span class="radio-circle"></span> Dominant share</label></div>
                     </div>
                     <div class="field-group">
-                        <label>Justification & Evidence</label>
+                        <div class="label-row">
+                            <label>Justification & Evidence</label>
+                            <span class="word-counter" id="c9">0 words</span>
+                        </div>
                         <textarea id="j9" class="input-field" style="height: 100px;"
                             placeholder="Provide evidence/notes for this rating..."></textarea>
                     </div>
@@ -413,9 +527,7 @@
                         </div>
 
                         <div class="interpretation-box">
-                            <p id="interpretation"
-                                style="font-size: 1.4rem; font-weight: 500; color: var(--text-main); line-height: 1.6;">
-                            </p>
+                            <p id="interpretation"></p>
                         </div>
 
                         <div class="metrics-grid" id="pillar-breakdown">
@@ -458,7 +570,7 @@
     <!-- Modals -->
     <div id="loading-overlay" class="loading-overlay">
         <div class="loader-visual"></div>
-        <p class="loading-text">Generating Professional Brief...</p>
+        <p class="loading-text" id="loading-status">Generating Professional Brief...</p>
     </div>
 
     <div id="report-modal" class="modal-overlay">
