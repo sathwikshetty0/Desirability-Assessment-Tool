@@ -175,7 +175,7 @@ Result:
 ## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/DAT.git
+git clone https://github.com/sathwikshetty0/Desirability-Assessment-Tool
 cd DAT
 ```
 
@@ -295,3 +295,4 @@ Innovation Systems | Product Strategy | Web Engineering
 
 DAT is not just a web application —
 it is a **decision-support infrastructure for modern innovation ecosystems.** 🚀
+
