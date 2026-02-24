@@ -297,12 +297,29 @@ function updatePillarBreakdown() {
 
 function generateReport() {
     const overlay = document.getElementById('loading-overlay');
+    const statusText = document.getElementById('loading-status');
+    const scoreVal = parseInt(document.getElementById('total-score').textContent);
+
     overlay.style.display = 'flex';
+    statusText.textContent = "Generating Professional Brief...";
+
+    // Trigger Cloud Sync
+    syncToGoogleSheets();
 
     setTimeout(() => {
         overlay.style.display = 'none';
         proceedToReport();
-    }, 1500);
+
+        // Success Celebration for high scores
+        if (scoreVal >= 33) {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#6366f1', '#22d3ee', '#f472b6']
+            });
+        }
+    }, 2000);
 }
 
 function proceedToReport() {
@@ -447,50 +464,59 @@ function startAssessment() {
         app.style.display = 'block';
         app.classList.add('app-enter');
     }, 500);
-    // Success Celebration
-    if (score >= 33) {
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#6366f1', '#22d3ee', '#f472b6']
-        });
-    }
-
-    // Auto-sync to Google Sheets (Simulated)
-    syncToGoogleSheets({
-        venture: document.getElementById('problem-statement').value,
-        evaluator: document.getElementById('evaluator-name').value,
-        score: score,
-        timestamp: new Date().toISOString()
-    });
 }
 
-async function syncToGoogleSheets(data) {
+async function syncToGoogleSheets() {
+    const data = {
+        venture: document.getElementById('problem-statement').value || "Untitled Venture",
+        team: document.getElementById('team-name').value || "N/A",
+        evaluator: document.getElementById('evaluator-name').value || "N/A",
+        score: document.getElementById('total-score').textContent,
+        verdict: document.getElementById('status-badge').textContent,
+        timestamp: new Date().toLocaleString(),
+    };
+
+    // Collect all question scores and evidence
+    for (let i = 1; i <= 9; i++) {
+        data[`q${i}_score`] = document.querySelector(`input[name="q${i}"]:checked`)?.value || "0";
+        data[`q${i}_evidence`] = document.getElementById(`j${i}`).value || "";
+    }
+
     console.log('Syncing to Google Sheets...', data);
     const overlay = document.getElementById('loading-overlay');
     const statusText = document.getElementById('loading-status');
 
     // Prepare for sync step
     overlay.classList.add('sync-active');
-    statusText.textContent = "Syncing Data to Cloud...";
+    statusText.textContent = "Syncing Data to Google Sheets...";
 
     try {
-        // Replace with actual Google Apps Script Web App URL
-        const SHEET_URL = "https://script.google.com/macros/s/PLACEHOLDER/exec";
+        // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        const SHEET_URL = "https://script.google.com/a/macros/inunity.in/s/AKfycbweOjiuWWriQmVz7Bq8itXo-N1-b0Bae9PLG7XTWKhWSOnayU9jx-W2UQTttaL2iH4t/exec";
 
-        // Simulating network delay for professional feel
-        await new Promise(r => setTimeout(r, 1500));
+        if (SHEET_URL.includes("PLACEHOLDER") || SHEET_URL.includes("XXXXXXXXXXXX")) {
+            console.warn("Google Sheets URL not configured. Skipping sync.");
+            await new Promise(r => setTimeout(r, 1000));
+            return;
+        }
 
-        // In real use:
-        // await fetch(SHEET_URL, { method: 'POST', body: JSON.stringify(data) });
+        // Using text/plain ensures no CORS preflight (OPTIONS request) is sent,
+        // which Google Apps Script often fails to handle correctly.
+        await fetch(SHEET_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(data)
+        });
 
-        console.log('Sync Complete');
+        console.log('Sync dispatched successfully');
     } catch (e) {
-        console.error('Sync Failed', e);
+        console.error('Sync process encountered an error:', e);
     } finally {
-        overlay.classList.remove('sync-active');
-        statusText.textContent = "Finalizing Report...";
+        setTimeout(() => {
+            overlay.classList.remove('sync-active');
+        }, 800);
     }
 }
 
